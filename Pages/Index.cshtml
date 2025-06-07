@@ -1,0 +1,76 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home";  
+}
+
+<!-- Hero-->
+<section class="jumbotron text-center py-5" style="background-color: #162c53; color: #f58020; margin-top:20px;">
+    <div class="container">
+        <h1 class="display-4" style="font-weight: bold;">Interport Cargo Services</h1>
+        <p class="lead" style="color: #f58020;">Trusted specialists in cargo</p>
+    </div>
+</section>
+
+@* <section> *@
+@*     <p> *@
+@*         <a asp-page="/Users/UserRegistration" class="btn btn-primary">Register as a User</a> *@
+@*     </p> *@
+@* </section> *@
+
+<section id="features" class="py-5" style="background-color: #f8f9fa;">
+    <div class="container">
+        <div class="row text-center">
+
+            <!-- Card 1 -->
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="https://www.interportcargo.com.au/wp-content/uploads/elementor/thumbs/storage-title-img-opse5t7uhyl9h4r8vasknnco53obxxgmbngf8vl2ds.jpg" class="card-img-top" alt="Fast & Secure">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: #003566;">Secure Warehousing</h5>
+                        <p class="card-text" style="color: #162c53;">
+                            Keep your goods safe in our monitored, climate-controlled storage facilities.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="https://www.interportcargo.com.au/wp-content/uploads/2020/05/Interport-Cargo18-768x513.jpeg" class="card-img-top" alt="Cross-Platform">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: #003566;">Reliable Freight Transport</h5>
+                        <p class="card-text" style="color: #162c53;">
+                            Timely and dependable transport solutions for local and interstate deliveries.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="https://www.interportcargo.com.au/wp-content/uploads/2020/05/container-container-port-port-3859710-768x512.jpg" class="card-img-top" alt="Extensible">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: #003566;">Smart Cargo Solutions</h5>
+                        <p class="card-text" style="color: #162c53;">
+                            Expert management of containerized goods from port to final destination.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="text-center py-5" style="background-color: #f58020; color: #162c53;">
+    <div class="container">
+        <h2 style="font-weight: bold;">Need a Quote?</h2>
+        <p>Request a personalised quotation to receive accurate pricing tailored to your specific cargo requirements.</p>
+        <a href="/Users/UserLogin?ReturnUrl=/Quotation" class="btn btn-lg" style="background-color: #003566; color: white; border: none;">
+            Book Now
+        </a>
+    </div>
+</section>
