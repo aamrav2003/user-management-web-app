@@ -1,0 +1,62 @@
+﻿@page
+@model IAB_251_Assessment2.Pages.Users.UserLoginModel
+@{
+    ViewData["Title"] = "User Login";
+} 
+
+
+
+<div class="container border-center" style="padding:0px">
+    <h2>Login</h2>
+    <form method="post">
+        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+        @* <div class="form-group row"> *@
+        @*     <div class="col-2"> *@
+        @*         <label asp-for="credential.EmailAddress">Email</label> *@
+        @*     </div> *@
+        @*     <div class="col-5"> *@
+        @*         <input type="text" asp-for="credential.EmailAddress" class="form-control"/> *@
+        @*     </div> *@
+        @*     <span class="text-danger" asp-validation-for="credential.EmailAddress"></span> *@
+        @* </div> *@
+
+        <div class="form-group" style="margin-top:20px">
+            <label asp-for="credential.EmailAddress">Email</label>
+            <input asp-for="credential.EmailAddress" class="form-control" />
+            <span class="text-danger" asp-validation-for="credential.EmailAddress"></span>
+        </div>
+        
+
+        @* <div class="form-group row"> *@
+        @*     <div class="col-2"> *@
+        @*         <label asp-for="credential.Password">Password</label> *@
+        @*     </div> *@
+        @*     <div class="col-5"> *@
+        @*         <input type="password" asp-for="credential.Password" class="form-control" /> *@
+        @*     </div> *@
+        @*     <span class="text-danger" asp-validation-for="credential.Password"></span> *@
+        @* </div> *@
+
+        <div class="form-group" style="margin-bottom: 20px">
+            <label asp-for="credential.Password">Password</label>
+            <input asp-for="credential.Password" class="form-control" />
+            <span class="text-danger" asp-validation-for="credential.Password"></span>
+        </div>
+        
+
+        <div class="form-group row">
+            <div class="col-2">
+                <input type="submit" class="btn btn-primary" style="background-color: #f58020; border-colour: #f58020: color: black; border: #f58020" value="login" />
+            </div>
+            <div class="col-5">
+
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <p style="color:red;">@Model.ErrorMessage</p>
+        }
+    </form>
+</div>
