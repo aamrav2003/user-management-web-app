@@ -10,10 +10,12 @@ namespace FleetProLayered_Architecture.DataAccess.Repositories
     public class EFQuoteRepository : IQuoteRepository
     {
         private readonly UserManagementDBContext _context;
+        private readonly ILogger<EFQuoteRepository> _logger;
 
-        public EFQuoteRepository(UserManagementDBContext context)
+        public EFQuoteRepository(UserManagementDBContext context, ILogger<EFQuoteRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
         
         public List<Quotation> GetAll() => _context.Quotations.ToList();
@@ -22,8 +24,19 @@ namespace FleetProLayered_Architecture.DataAccess.Repositories
 
         public void Add(Quotation quote)
         {
-            _context.Quotations.Add(quote);
-            _context.SaveChanges();
+            try
+            {
+                _logger.LogInformation($"Adding new quotation for client: {quote.clientName}");
+                _context.Quotations.Add(quote);
+                _context.SaveChanges();
+                _logger.LogInformation($"Successfully added quotation with ID: {quote.Id}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error adding quotation: {ex.Message}");
+                _logger.LogError($"Stack trace: {ex.StackTrace}");
+                throw;
+            }
         }
 
         public void Update(Quotation quote)
