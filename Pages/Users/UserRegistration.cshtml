@@ -1,0 +1,48 @@
+﻿@page
+@model IAB_251_Assessment2.Pages.Users.UserRegistrationModel
+@{
+    ViewData["Title"] = "Register User";
+}
+
+<h2>Register New User</h2>
+
+<form method="post">
+    <div class="form-group" style="margin-top: 20px">
+        <label asp-for="User.FirstName">First Name</label>
+        <input asp-for="User.FirstName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="User.FamilyName">Family Name</label>
+        <input asp-for="User.FamilyName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="User.EmailAddress">Email</label>
+        <input asp-for="User.EmailAddress" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="User.PhoneNumber">Mobile</label>
+        <input asp-for="User.PhoneNumber" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="User.CompanyName">Company Name</label>
+        <input asp-for="User.CompanyName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="User.Address">Address</label>
+        <input asp-for="User.Address" class="form-control" />
+    </div>
+    <div class="form-group" style="margin-bottom: 20px">
+        <label asp-for="User.Password">Password</label>
+        <input asp-for="User.Password" class="form-control" type="password" />
+    </div>
+    <div class="form-group" style="margin-bottom: 20px">
+        <label asp-for="User.Role">Role</label>
+        <select asp-for="User.Role" class="form-control">
+            <option value="Customer">Customer</option>
+            <option value="Employee">Employee</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-success" style="background-color: #f58020; border-colour: #f58020; color: black; border: #f58020">Register</button>
+    <a asp-page="/Index" class="btn btn-secondary" style="background-color: #383838; border-colour: #383838; color: white; border: #383838">Cancel</a>
+</form>
+
