@@ -1,59 +1,99 @@
+# Quotation Management System
 
-Built by https://www.blackbox.ai
-
----
-
-# Project Title
-
-## Project Overview
-This project is a web application designed to manage registered users. It provides functionality for connecting to a SQLite database, logging application events, and handling detailed error reports during development.
-
-## Installation
-To set up this project locally, follow these steps:
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/yourusername/yourproject.git
-   ```
-
-2. **Navigate to the project directory:**
-   ```bash
-   cd yourproject
-   ```
-
-3. **Ensure you have .NET SDK installed:**  
-   [Download .NET SDK](https://dotnet.microsoft.com/download)
-
-4. **Install the necessary dependencies:**
-   ```bash
-   dotnet restore
-   ```
-   
-5. **Run the application:**
-   ```bash
-   dotnet run
-   ```
-
-## Usage
-Once the application is running, you can access it via your web browser at `http://localhost:5000` (or the port specified in your launch settings). You will be presented with the main interface for managing registered users.
+A web-based quotation management system built with ASP.NET Core that allows employees to prepare quotations and customers to view and respond to them.
 
 ## Features
-- Connects to a SQLite database for data persistence.
-- Provides detailed error logging during development.
-- Configurable logging levels for different application components.
 
-## Dependencies
-For this project, no explicit dependencies are listed in a `package.json` file, as it is built with .NET technology. However, ensure you have the .NET SDK to resolve any dependencies required by the framework.
+### Employee Features (I4)
+- Login with employee credentials
+- View a dashboard of all quotation requests
+- See statistics of New, Prepared, Accepted, and Rejected quotations
+- Select and prepare quotations by:
+  - Setting service rates
+  - Applying discounts
+  - Adding comments
+  - Calculating total prices
+- Track quotation status and customer responses
+
+### Customer Features (I6)
+- Login with customer credentials
+- View list of quotations prepared by employees
+- Review quotation details including:
+  - Service rates
+  - Applied discounts
+  - Total prices
+  - Comments from employees
+- Accept or reject quotations
+- Track response history
+
+## Technology Stack
+- ASP.NET Core 6.0
+- Entity Framework Core with SQLite
+- Bootstrap 5
+- Font Awesome Icons
+- Razor Pages
+
+## Getting Started
+
+### Prerequisites
+- .NET 6.0 SDK
+- Visual Studio 2022 or VS Code
+
+### Test Credentials
+
+1. Employee Account:
+   - Email: employee@test.com
+   - Password: Test123!
+
+2. Customer Account:
+   - Email: customer@test.com
+   - Password: Test123!
+
+### Running the Application
+
+1. Clone the repository
+2. Navigate to the project directory
+3. Run the following commands:
+   ```bash
+   dotnet restore
+   dotnet ef database update
+   dotnet run
+   ```
+4. Open a browser and navigate to `http://localhost:5211`
 
 ## Project Structure
-```
-/yourproject
-│
-├── appsettings.json                # Main configuration file including connection strings and logging settings
-├── appsettings.Development.json    # Configuration for the development environment with detailed error logging
-└── ...                              # Additional project files (controllers, models, views, etc.) will be present here
-```
 
----
+- `/Pages` - Razor Pages for the web interface
+- `/BusinessLogic` - Business logic and entities
+- `/DataAccess` - Data access layer with Entity Framework
+- `/Application` - Application services
+- `/wwwroot` - Static files (CSS, JS, images)
 
-For further assistance or contribution guidelines, please refer to the `CONTRIBUTING.md` file or contact the project maintainers.
+## Database Schema
+
+### Users Table
+- Id (Primary Key)
+- FirstName
+- FamilyName
+- EmailAddress
+- PhoneNumber
+- CompanyName
+- Address
+- Password
+- Role
+
+### Quotations Table
+- Id (Primary Key)
+- clientName
+- dateIssued
+- status
+- Rate
+- Discount
+- TotalPrice
+- CustomerDecision
+- Comments
+- PreparedBy
+- CustomerResponseDate
+
+## License
+MIT License
