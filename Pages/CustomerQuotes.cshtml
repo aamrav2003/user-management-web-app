@@ -1,0 +1,214 @@
+@page
+@model IAB_251_Assessment2.Pages.CustomerQuotesModel
+@{
+    ViewData["Title"] = "Customer Quotes";
+}
+
+<div class="container mt-4">
+    <!-- Professional Header with Banner -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <h1 class="card-title mb-0">
+                        <i class="fas fa-file-contract me-2"></i>
+                        My Quotations
+                    </h1>
+                    <p class="card-text">Customer Dashboard - View and Respond to Quotations</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            @Model.SuccessMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            @Model.ErrorMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list me-2"></i>
+                        Available Quotations
+                    </h5>
+                    <span class="badge bg-primary">@(Model.Quotes?.Count ?? 0) Total</span>
+                </div>
+                <div class="card-body">
+                    @if (Model.Quotes != null && Model.Quotes.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">
+                                            <i class="fas fa-user me-1"></i>Client Name
+                                        </th>
+                                        <th scope="col">
+                                            <i class="fas fa-calendar me-1"></i>Date Issued
+                                        </th>
+                                        <th scope="col">
+                                            <i class="fas fa-dollar-sign me-1"></i>Rate
+                                        </th>
+                                        <th scope="col">
+                                            <i class="fas fa-percentage me-1"></i>Discount
+                                        </th>
+                                        <th scope="col">
+                                            <i class="fas fa-calculator me-1"></i>Total Price
+                                        </th>
+                                        <th scope="col">
+                                            <i class="fas fa-info-circle me-1"></i>Status
+                                        </th>
+                                        <th scope="col">
+                                            <i class="fas fa-cogs me-1"></i>Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int i = 1;
+                                    }
+                                    @foreach(var q in Model.Quotes)
+                                    {
+                                        <tr class="@(q.status == "Prepared" ? "table-warning" : (q.status == "Accepted" ? "table-success" : q.status == "Rejected" ? "table-danger" : ""))">
+                                            <td>@i</td>
+                                            <td>
+                                                <strong>@q.clientName</strong>
+                                            </td>
+                                            <td>@q.dateIssued.ToShortDateString()</td>
+                                            <td>$@q.Rate.ToString("F2")</td>
+                                            <td>@q.Discount.ToString("F1")%</td>
+                                            <td>
+                                                <strong class="text-primary">$@q.TotalPrice.ToString("F2")</strong>
+                                            </td>
+                                            <td>
+                                                @if(q.status == "Prepared")
+                                                {
+                                                    <span class="badge bg-warning text-dark">
+                                                        <i class="fas fa-clock me-1"></i>Awaiting Response
+                                                    </span>
+                                                }
+                                                else if(q.status == "Accepted")
+                                                {
+                                                    <span class="badge bg-success">
+                                                        <i class="fas fa-check me-1"></i>Accepted
+                                                    </span>
+                                                }
+                                                else if(q.status == "Rejected")
+                                                {
+                                                    <span class="badge bg-danger">
+                                                        <i class="fas fa-times me-1"></i>Rejected
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">@q.status</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if(q.status == "Prepared")
+                                                {
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-success btn-sm" 
+                                                                onclick="confirmAction('@q.Id', 'Accept', '@q.clientName', '@q.TotalPrice.ToString("F2")')">
+                                                            <i class="fas fa-check me-1"></i>Accept
+                                                        </button>
+                                                        <button type="button" class="btn btn-danger btn-sm" 
+                                                                onclick="confirmAction('@q.Id', 'Reject', '@q.clientName', '@q.TotalPrice.ToString("F2")')">
+                                                            <i class="fas fa-times me-1"></i>Reject
+                                                        </button>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">
+                                                        @if(q.CustomerResponseDate.HasValue)
+                                                        {
+                                                            <small>Responded: @q.CustomerResponseDate.Value.ToShortDateString()</small>
+                                                        }
+                                                        else
+                                                        {
+                                                            <small>No action required</small>
+                                                        }
+                                                    </span>
+                                                }
+                                            </td>
+                                        </tr>
+                                        i++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No quotations available</h5>
+                            <p class="text-muted">You don't have any quotations at the moment. Check back later!</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Confirm Action</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmationMessage"></p>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Note:</strong> This action cannot be undone.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a id="confirmActionBtn" href="#" class="btn btn-primary">Confirm</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        function confirmAction(quoteId, action, clientName, totalPrice) {
+            const actionText = action.toLowerCase();
+            const actionClass = action === 'Accept' ? 'btn-success' : 'btn-danger';
+            const actionIcon = action === 'Accept' ? 'fas fa-check' : 'fas fa-times';
+            
+            document.getElementById('confirmationMessage').innerHTML = 
+                `Are you sure you want to <strong>${actionText}</strong> the quotation for <strong>${clientName}</strong> with total price <strong>$${totalPrice}</strong>?`;
+            
+            const confirmBtn = document.getElementById('confirmActionBtn');
+            confirmBtn.href = `/CustomerQuotes?handler=${action}&id=${quoteId}`;
+            confirmBtn.className = `btn ${actionClass}`;
+            confirmBtn.innerHTML = `<i class="${actionIcon} me-1"></i>${action}`;
+            
+            new bootstrap.Modal(document.getElementById('confirmationModal')).show();
+        }
+    </script>
+}
