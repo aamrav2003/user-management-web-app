@@ -51,10 +51,7 @@ A web-based quotation management system built with ASP.NET Core that allows empl
 
 ### Running the Application
 
-1. Clone the repository
-2. Navigate to the project directory
-3. Run the following commands:
-   ```bash
+
    dotnet restore
    dotnet ef database update
    dotnet run
