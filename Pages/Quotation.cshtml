@@ -1,0 +1,265 @@
+@page
+@model IAB_251_Assessment2.Pages.QuotationModel
+@{
+    ViewData["Title"] = "Quotation Management";
+}
+
+<div class="container mt-4">
+    <!-- Professional Header with Banner -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h1 class="card-title mb-0">
+                        <i class="fas fa-clipboard-list me-2"></i>
+                        Quotation Management
+                    </h1>
+                    <p class="card-text">Employee Dashboard - Manage Quotation Requests</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-file-alt fa-2x mb-2"></i>
+                    <h5>@(Model.QuoteList?.Count(q => q.status == "New") ?? 0)</h5>
+                    <small>New Requests</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark">
+                <div class="card-body text-center">
+                    <i class="fas fa-clock fa-2x mb-2"></i>
+                    <h5>@(Model.QuoteList?.Count(q => q.status == "Prepared") ?? 0)</h5>
+                    <small>Prepared</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-check fa-2x mb-2"></i>
+                    <h5>@(Model.QuoteList?.Count(q => q.status == "Accepted") ?? 0)</h5>
+                    <small>Accepted</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-danger text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-times fa-2x mb-2"></i>
+                    <h5>@(Model.QuoteList?.Count(q => q.status == "Rejected") ?? 0)</h5>
+                    <small>Rejected</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quotations List -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list me-2"></i>
+                        All Quotations
+                    </h5>
+                    <span class="badge bg-primary">@(Model.QuoteList?.Count ?? 0) Total</span>
+                </div>
+                <div class="card-body">
+                    @if (Model.QuoteList != null && Model.QuoteList.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">
+                                            <i class="fas fa-user me-1"></i>Client Name
+                                        </th>
+                                        <th scope="col">
+                                            <i class="fas fa-calendar me-1"></i>Date Issued
+                                        </th>
+                                        <th scope="col">
+                                            <i class="fas fa-info-circle me-1"></i>Status
+                                        </th>
+                                        <th scope="col">
+                                            <i class="fas fa-dollar-sign me-1"></i>Rate
+                                        </th>
+                                        <th scope="col">
+                                            <i class="fas fa-percentage me-1"></i>Discount
+                                        </th>
+                                        <th scope="col">
+                                            <i class="fas fa-calculator me-1"></i>Total Price
+                                        </th>
+                                        <th scope="col">
+                                            <i class="fas fa-user-check me-1"></i>Customer Decision
+                                        </th>
+                                        <th scope="col">
+                                            <i class="fas fa-cogs me-1"></i>Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int i = 1;
+                                    }
+                                    @foreach (var quote in Model.QuoteList)
+                                    {
+                                        <tr class="@(quote.status == "New" ? "table-info" : (quote.status == "Prepared" ? "table-warning" : (quote.status == "Accepted" ? "table-success" : quote.status == "Rejected" ? "table-danger" : "")))">
+                                            <th scope="row">@i</th>
+                                            <td>
+                                                <strong>@quote.clientName</strong>
+                                            </td>
+                                            <td>@quote.dateIssued.ToShortDateString()</td>
+                                            <td>
+                                                @if(quote.status == "New")
+                                                {
+                                                    <span class="badge bg-info">
+                                                        <i class="fas fa-file-alt me-1"></i>New
+                                                    </span>
+                                                }
+                                                else if(quote.status == "Prepared")
+                                                {
+                                                    <span class="badge bg-warning text-dark">
+                                                        <i class="fas fa-clock me-1"></i>Prepared
+                                                    </span>
+                                                }
+                                                else if(quote.status == "Accepted")
+                                                {
+                                                    <span class="badge bg-success">
+                                                        <i class="fas fa-check me-1"></i>Accepted
+                                                    </span>
+                                                }
+                                                else if(quote.status == "Rejected")
+                                                {
+                                                    <span class="badge bg-danger">
+                                                        <i class="fas fa-times me-1"></i>Rejected
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">@quote.status</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if(quote.Rate > 0)
+                                                {
+                                                    <span>$@quote.Rate.ToString("F2")</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">-</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if(quote.Discount > 0)
+                                                {
+                                                    <span>@quote.Discount.ToString("F1")%</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">-</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if(quote.TotalPrice > 0)
+                                                {
+                                                    <strong class="text-primary">$@quote.TotalPrice.ToString("F2")</strong>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">-</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if(!string.IsNullOrEmpty(quote.CustomerDecision))
+                                                {
+                                                    <span class="@(quote.CustomerDecision == "Accepted" ? "text-success" : "text-danger")">
+                                                        @quote.CustomerDecision
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">Pending</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if(quote.status == "New" || quote.status == "Prepared")
+                                                {
+                                                    <a asp-page="/Prepare" asp-route-id="@quote.Id" class="btn btn-primary btn-sm">
+                                                        <i class="fas fa-edit me-1"></i>
+                                                        @(quote.status == "New" ? "Prepare" : "Edit")
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">
+                                                        <small>Completed</small>
+                                                    </span>
+                                                }
+                                            </td>
+                                        </tr>
+                                        i++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No quotations found</h5>
+                            <p class="text-muted">No quotation requests available at the moment.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add New Quotation -->
+    <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                        <i class="fas fa-plus me-2"></i>
+                        Create New Quotation Request
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        <div class="mb-3">
+                            <label asp-for="Quote.clientName" class="form-label fw-bold">
+                                <i class="fas fa-user me-2"></i>Client Name
+                            </label>
+                            <input asp-for="Quote.clientName" class="form-control" placeholder="Enter client name" />
+                            <span asp-validation-for="Quote.clientName" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a asp-page="Index" class="btn btn-secondary me-md-2">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Home
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save me-2"></i>Create Quotation
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+}
