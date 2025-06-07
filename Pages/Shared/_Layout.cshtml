@@ -1,0 +1,86 @@
+﻿@{
+    var hardCodedStatus = "NotLoggedIn";
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    hardCodedStatus = "LoggedIn";
+}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - IAB_251_Assessment2</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/IAB_251_Assessment2.styles.css" asp-append-version="true" />
+</head>
+<body style="background-color: #f8f9fa;">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm" style="background-color: #383838;">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-page="/Index" style="color: #f58020; font-weight: bold;">
+                    InterportCargo
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+                        style="border-color: #f58020;">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between w-100">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/Quotation" style="color: #f58020;">Quotes</a>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/CustomerQuotes" style="color: #f58020;">Customer Quotes</a>
+                        </li>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/Privacy" style="color: #f58020;">Privacy</a>
+                        </li>
+                    </ul>
+                    @if (hardCodedStatus == "NotLoggedIn")
+                    {
+                        <div class="d-flex">
+                            <a class="btn btn-outline-warning me-2" style="background-color: #383838; border-color: #f58020; color: white;" asp-area="" asp-page="/Users/UserLogin">Login</a>
+                            <a class="btn btn-warning" style="background-color: #f58020; border-colour: #f58020: color: black; border: #f58020" asp-area="" asp-page="/Users/UserRegistration">Register</a>
+                        </div>
+                    }
+                    @if (hardCodedStatus == "LoggedIn")
+                    {
+                        <form method="post" asp-page="/Index" asp-page-handler="Logout" style="display:inline;">
+                            <span class="text-light" style="margin-right: 12px">@User.Identity.Name</span>
+                            <img src="https://cdn-icons-png.freepik.com/512/5997/5997002.png" alt="Profile" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;" />
+                            @* <button type="submit">Logout</button> *@
+                            <button class="btn btn-warning" style="background-color: #f58020; border-colour: #f58020: color: black; border: #f58020" type="submit">Logout</button>
+                        </form>
+
+                        @* <div class="d-flex"> *@
+                        @*     <button type="submit">Logout</button> *@
+                        @* </div> *@
+                        @* <span class="text-light" style="margin-right: 12px">testuser@gmail.com</span> *@
+                        @* <img src="https://cdn-icons-png.freepik.com/512/5997/5997002.png" alt="Profile" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;" /> *@
+                    }
+                </div>
+            </div>
+        </nav>
+
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
