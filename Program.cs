@@ -16,20 +16,15 @@ builder.Services.AddDbContext<UserManagementDBContext>(options =>
 // Add services to the container.
 
 
-builder.Services.AddScoped<IUserRegistrationAppService, UserRegistrationAppService>();
-builder.Services.AddScoped<IUserRegistrationService, UserRegistrationService>();
-builder.Services.AddSingleton<IUserRepository, InMemoryUserDB>();
-
-builder.Services.AddSingleton<IUserRepository, InMemoryUserDB>();
-builder.Services.AddTransient<IUserRegistrationService, UserRegistrationService>();
-
+// User Registration Services
 builder.Services.AddScoped<IUserRepository, EFUserRepository>();
 builder.Services.AddScoped<IUserRegistrationService, UserRegistrationService>();
 builder.Services.AddScoped<IUserRegistrationAppService, UserRegistrationAppService>();
 
+// Quotation Services
 builder.Services.AddScoped<IQuoteRepository, EFQuoteRepository>();
 builder.Services.AddScoped<IQuotationService, QuotationService>();
-builder.Services.AddScoped<IQuoteAppService, QuoteAppService>();    
+builder.Services.AddScoped<IQuoteAppService, QuoteAppService>();
 
 
 builder.Services.AddRazorPages();
