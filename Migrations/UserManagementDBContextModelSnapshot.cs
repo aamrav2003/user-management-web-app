@@ -24,11 +24,9 @@ namespace IAB_251_Assessment2.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Comments")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CustomerDecision")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("CustomerResponseDate")
@@ -38,7 +36,6 @@ namespace IAB_251_Assessment2.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PreparedBy")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Rate")
@@ -55,7 +52,6 @@ namespace IAB_251_Assessment2.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("status")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
