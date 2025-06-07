@@ -14,10 +14,14 @@ namespace IAB_251_Assessment2.Pages
     public class QuotationModel : PageModel
     {
         private readonly IQuoteAppService _quoteAppService;
+        private readonly ILogger<QuotationModel> _logger;
 
-        public QuotationModel(IQuoteAppService quoteAppService)
+        public QuotationModel(IQuoteAppService quoteAppService, ILogger<QuotationModel> logger)
         {
             _quoteAppService = quoteAppService;
+            _logger = logger;
+            Quote = new QuoteViewModel();
+            QuoteList = new List<QuoteViewModel>();
         }
 
         [BindProperty]
@@ -44,31 +48,65 @@ namespace IAB_251_Assessment2.Pages
 
         public IActionResult OnPost()
         {
+            _logger.LogInformation("OnPost started");
+            _logger.LogInformation($"Quote object: {Quote?.clientName ?? "null"}");
+
+            foreach (var modelStateEntry in ModelState.Values)
+            {
+                foreach (var error in modelStateEntry.Errors)
+                {
+                    _logger.LogWarning($"ModelState error: {error.ErrorMessage}");
+                }
+            }
+
             if (!ModelState.IsValid)
             {
-                // Reload the list so the page can render correctly
+                _logger.LogWarning("ModelState is invalid");
                 OnGet();
                 return Page();
             }
 
-            var now = DateTime.Now;
-
-            var entity = new Quotation
+            if (Quote == null)
             {
-                clientName = Quote.clientName,
-                dateIssued = now,
-                status = "New",
-                Rate = 0m,
-                Discount = 0m,
-                TotalPrice = 0m,
-                CustomerDecision = string.Empty,
-                Comments = string.Empty,
-                PreparedBy = string.Empty
-            };
+                _logger.LogError("Quote object is null");
+                ModelState.AddModelError(string.Empty, "Quote data is missing");
+                OnGet();
+                return Page();
+            }
 
-            _quoteAppService.AddQuote(entity);
+            try
+            {
+                var now = DateTime.Now;
+                _logger.LogInformation($"Creating new quotation for client: {Quote.clientName}");
 
-            return RedirectToPage("/Quotation");
+                var entity = new Quotation
+                {
+                    clientName = Quote.clientName,
+                    dateIssued = now,
+                    status = "New",
+                    Rate = 0.01m,
+                    Discount = 0m,
+                    TotalPrice = 0m,
+                    CustomerDecision = string.Empty,
+                    Comments = string.Empty,
+                    PreparedBy = string.Empty
+                };
+
+                _logger.LogInformation("About to call _quoteAppService.AddQuote");
+                _quoteAppService.AddQuote(entity);
+                _logger.LogInformation($"Quotation created successfully with ID: {entity.Id}");
+
+                TempData["SuccessMessage"] = "Quotation created successfully!";
+                return RedirectToPage("/Quotation");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error creating quotation: {ex.Message}");
+                _logger.LogError($"Stack trace: {ex.StackTrace}");
+                ModelState.AddModelError(string.Empty, "An error occurred while creating the quotation.");
+                OnGet();
+                return Page();
+            }
         }
     }
 }
